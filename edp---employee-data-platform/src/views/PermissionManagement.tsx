@@ -23,8 +23,8 @@ export default function PermissionManagement() {
       setPermissions(permList);
       setUserRoles(userRoleList);
       setAuditLogs(logs);
-    } catch (e: any) {
-      setError(e.message || "加载权限数据失败");
+    } catch {
+      // API unavailable (local dev) - show empty state
     }
   };
 

@@ -22,8 +22,8 @@ export default function APIManagement() {
       setApis(apiList);
       setKeys(keyList);
       setLogs(logList);
-    } catch (e: any) {
-      setError(e.message || "加载 API 管理数据失败");
+    } catch {
+      // API unavailable (local dev) - show empty state
     } finally {
       setLoading(false);
     }

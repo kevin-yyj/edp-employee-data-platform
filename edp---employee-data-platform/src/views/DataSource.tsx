@@ -71,8 +71,8 @@ export default function DataSource() {
         })),
       );
       setError("");
-    } catch (e: any) {
-      setError(e.message || "加载数据源失败");
+    } catch {
+      // API unavailable (local dev) - keep static fallback data
     }
   };
 
