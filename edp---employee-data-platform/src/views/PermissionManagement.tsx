@@ -14,10 +14,10 @@ export default function PermissionManagement() {
     try {
       setError("");
       const [roleList, permList, userRoleList, logs] = await Promise.all([
-        api.get<any[]>("/api/roles"),
-        api.get<any[]>("/api/permissions"),
-        api.get<any[]>("/api/user-roles"),
-        api.get<any[]>("/api/audit-logs"),
+        api.get<any[]>("/api/admin?resource=roles"),
+        api.get<any[]>("/api/admin?resource=permissions"),
+        api.get<any[]>("/api/admin?resource=user-roles"),
+        api.get<any[]>("/api/admin?resource=audit-logs"),
       ]);
       setRoles(roleList);
       setPermissions(permList);
@@ -35,7 +35,7 @@ export default function PermissionManagement() {
   const assignRole = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.post("/api/user-roles", form);
+      await api.post("/api/admin?resource=user-roles", form);
       setForm({ userId: "", roleId: "" });
       await load();
     } catch (e: any) {

@@ -4,8 +4,13 @@ import { api } from "../lib/api";
 
 const cozeBotId = import.meta.env.VITE_COZE_BOT_ID;
 const cozeBaseUrl = import.meta.env.VITE_COZE_BASE_URL || "https://www.coze.cn";
+const cozeShareUrl = import.meta.env.VITE_COZE_SHARE_URL;
 
 function buildCozeUrl() {
+  if (cozeShareUrl) return cozeShareUrl;
+  if (cozeBotId?.startsWith("http://") || cozeBotId?.startsWith("https://")) {
+    return cozeBotId;
+  }
   if (!cozeBotId) return "";
   return `${cozeBaseUrl}/store/agent/${cozeBotId}`;
 }
@@ -22,14 +27,14 @@ export default function AIAssistantCoze() {
     try {
       let currentSessionId = sessionId;
       if (!currentSessionId) {
-        const created = await api.post<any>("/api/ai/sessions", {
+        const created = await api.post<any>("/api/ai?resource=sessions", {
           title: input.slice(0, 30),
         });
         currentSessionId = created.id;
         setSessionId(created.id);
       }
 
-      await api.post("/api/ai/messages", {
+      await api.post("/api/ai?resource=messages", {
         sessionId: currentSessionId,
         role: "user",
         content: input,
@@ -59,7 +64,7 @@ export default function AIAssistantCoze() {
               <Bot className="mx-auto text-primary mb-3" size={32} />
               <p className="font-semibold">未检测到 Coze 配置</p>
               <p className="text-sm text-slate-500 mt-2">
-                请在环境变量里设置 `VITE_COZE_BOT_ID`（可选 `VITE_COZE_BASE_URL`）。
+                请在环境变量里设置 `VITE_COZE_SHARE_URL`（或 `VITE_COZE_BOT_ID`）。
               </p>
             </div>
           </div>

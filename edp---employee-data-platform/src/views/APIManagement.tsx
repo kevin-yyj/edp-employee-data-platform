@@ -15,9 +15,9 @@ export default function APIManagement() {
       setLoading(true);
       setError("");
       const [apiList, keyList, logList] = await Promise.all([
-        api.get<any[]>("/api/apis"),
-        api.get<any[]>("/api/api-keys"),
-        api.get<any[]>("/api/api-logs"),
+        api.get<any[]>("/api/api-management?resource=catalog"),
+        api.get<any[]>("/api/api-management?resource=keys"),
+        api.get<any[]>("/api/api-management?resource=logs"),
       ]);
       setApis(apiList);
       setKeys(keyList);
@@ -35,7 +35,7 @@ export default function APIManagement() {
 
   const handleCreateKey = async () => {
     try {
-      const created = await api.post<any>("/api/api-keys", {
+      const created = await api.post<any>("/api/api-management?resource=keys", {
         clientName: `EDP-Client-${new Date().toISOString().slice(0, 10)}`,
       });
       setNewKey(created.plainKey || "");
